@@ -1,5 +1,5 @@
 import React from 'react';
-import { Claim } from '@/lib/geminiService';
+import { Claim } from '@/app/lib/geminiService';
 
 interface ClaimsDisplayProps {
   claims: Claim[];

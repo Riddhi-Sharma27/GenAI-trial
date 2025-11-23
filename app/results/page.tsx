@@ -62,19 +62,20 @@ function CombinedResultsContent() {
         }
         
         // Fallback to regular news fetching
-        const apiKey = process.env.NEXT_PUBLIC_NEWSAPI_KEY;
-        if (!apiKey) {
-          throw new Error("News API key is not configured");
-        }
-        const response = await fetch(
-          `https://newsapi.org/v2/everything?q=${encodeURIComponent(queryParam)}&language=en&sortBy=publishedAt&pageSize=20&apiKey=${apiKey}`
-        );
-        
-        if (!response.ok) {
-          throw new Error("Failed to fetch news");
-        }
-        
-        const data = await response.json();
+        // const apiKey = process.env.NEXT_PUBLIC_NEWSAPI_KEY;
+        // if (!apiKey) {
+        //   throw new Error("News API key is not configured");
+        // }
+        // const response = await fetch(
+        //   `https://newsapi.org/v2/everything?q=${encodeURIComponent(queryParam)}&language=en&sortBy=publishedAt&pageSize=20&apiKey=${apiKey}`
+        // );
+        setArticles([]);
+        setLoading(false);
+        return;
+        // if (!response.ok) {
+        //   throw new Error("Failed to fetch news");
+        // }
+        // const data = await response.json();
         
         // Filter articles to only include those with images AND descriptions
         const validArticles = (data.articles || []).filter(

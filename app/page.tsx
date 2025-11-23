@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { searchNewsThroughBackend } from "@/app/lib/newsAPI";
 import { Search, Menu, ChevronRight, Loader2 } from "lucide-react";
 import { VideoUploadModal } from "@/app/components/VideoUploadModal";
 import Footer from "@/app/components/Footer";
@@ -28,38 +29,30 @@ export default function NewsVerificationPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const apiKey = process.env.NEXT_PUBLIC_NEWSAPI_KEY;
-        if (!apiKey) {
-          throw new Error("News API key is not configured");
-        }
-        const response = await fetch(
-          `https://newsapi.org/v2/top-headlines?country=us&pageSize=50&apiKey=${apiKey}`
-        );
-        const data = await response.json();
-        if (data.articles) {
-          // Filter articles to only include those with images AND descriptions
-          const validArticles = data.articles.filter(
-            (article: NewsArticle) => 
-              article.urlToImage && 
-              article.urlToImage.trim() !== "" &&
-              article.description && 
-              article.description.trim() !== "" &&
-              article.title &&
-              article.title.trim() !== ""
-          );
-          // Take first 10 valid articles
-          setArticles(validArticles.slice(0, 10));
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching news:", error);
-        setLoading(false);
+  const fetchNews = async () => {
+    try {
+      setLoading(true);
+
+      // Instead of calling NewsAPI directly → call backend
+      const result = await searchNewsThroughBackend("top headlines");
+
+      if (result && result.relatedArticles) {
+        setArticles(result.relatedArticles.slice(0, 10));
+      } else {
+        setArticles([]);
       }
-    };
-    fetchNews();
-  }, []);
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching news:", error);
+      setLoading(false);
+    }
+  };
+
+  fetchNews();
+}, []);
+
+
 
   // Tips array used by the 6-steps section
   const tips = [

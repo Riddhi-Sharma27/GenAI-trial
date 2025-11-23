@@ -4,7 +4,7 @@ import type React from "react";
 import { useState, useRef } from "react";
 import { X, Play, LinkIcon, Type, Trash, Loader2 } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
-import { newsVerificationService, VerificationInput } from "@/lib/verificationService";
+import { newsVerificationService, VerificationInput } from "@/app/lib/verificationService";
 
 export function VideoUploadModal({
   onClose,
